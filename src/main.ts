@@ -18,6 +18,11 @@ function configureSwagger(
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, documentFactory);
+
+  Logger.log(
+    '📄 Swagger documentation generated, it is available at /docs',
+    SwaggerModule.name,
+  );
 }
 
 function configureLogger(packageName: string, version: string) {
