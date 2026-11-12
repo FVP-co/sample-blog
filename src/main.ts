@@ -1,7 +1,14 @@
-import { NestFactory } from '@nestjs/core';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { MainModule } from './main.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { ConsoleLogger, INestApplication, Logger } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  ConsoleLogger,
+  INestApplication,
+  Logger,
+  ValidationPipe,
+} from '@nestjs/common';
+import { DatabaseErrorHandlerInterceptor } from './core/exception-handler/database.interceptor';
 
 function configureSwagger(
   app: INestApplication<any>,
@@ -42,6 +49,15 @@ async function bootstrap() {
     logger: logger,
   });
   app.enableCors();
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+    }),
+  );
+
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  app.useGlobalInterceptors(new DatabaseErrorHandlerInterceptor());
   configureSwagger(app, PACKAGE_NAME, PACKAGE_VERSION, PACKAGE_DESCRIPTION);
   await app.listen(process.env.PORT ?? 3000);
 }

@@ -1,13 +1,14 @@
 import {
   Injectable,
+  Logger,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'src/core/entities';
 import type { Repository } from 'typeorm';
-import type { SignUpModel } from './model/sign-up.model';
 import type { SignInModel } from './model/sign-in.model';
+import type { SignUpModel } from './model/sign-up.model';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +20,8 @@ export class AuthService {
    * @description Creates a user
    */
   public async singUp(data: SignUpModel) {
+    Logger.debug(data, AuthService.name);
+    Logger.debug(`Password hash: ${data.passwordHash}`, AuthService.name);
     const user = await this.userRepo.save({
       age: data.age,
       name: data.name,

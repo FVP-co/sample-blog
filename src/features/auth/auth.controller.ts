@@ -6,8 +6,8 @@ import {
   Inject,
   Post,
 } from '@nestjs/common';
-import { AuthService } from './auth.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthService } from './auth.service';
 
 import { CredentialsService } from 'src/infra/credentials/credentials.service';
 import { TokenModel } from 'src/infra/credentials/models/token.model';

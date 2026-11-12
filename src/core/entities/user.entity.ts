@@ -13,6 +13,7 @@ export class UserEntity extends BaseEntity {
 
   @Column({
     type: 'varchar',
+    unique: true,
   })
   email!: string;
 
